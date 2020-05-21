@@ -26,3 +26,4 @@ out
 
 data/*.json
 data/data
+.vercel

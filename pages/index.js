@@ -3,8 +3,8 @@ import Head from 'next/head'
 import Post from '../components/post'
 
 const client = require('contentful').createClient({
-  space: process.env.CONTENTFUL_SPACE_ID,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN
+  space: process.env.SPACE_ID,
+  accessToken: process.env.ACCESS_TOKEN
 })
 
 function HomePage() {
@@ -37,12 +37,7 @@ function HomePage() {
       {posts.length > 0
         ? posts.map(p => (
             <Post
-              alt={p.fields.alt}
-              date={p.fields.date}
-              key={p.fields.title}
-              image={p.fields.image}
               title={p.fields.title}
-              url={p.fields.url}
             />
           ))
         : null}
