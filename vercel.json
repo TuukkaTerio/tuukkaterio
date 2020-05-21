@@ -1,8 +1,8 @@
 {
     "build": {
       "env": {
-        "CONTENTFUL_SPACE_ID": "@contentful_space_id",
-        "CONTENTFUL_ACCESS_TOKEN": "@contentful_access_token"
+        "CONTENTFUL_SPACE_ID": "@contentful-space-id-production-iclu",
+        "CONTENTFUL_ACCESS_TOKEN": "@contentful-access-token-production-ulo7"
       }
     }
   }
