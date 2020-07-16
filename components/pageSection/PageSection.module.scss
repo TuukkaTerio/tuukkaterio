@@ -1,0 +1,19 @@
+.pageSection {
+    border: 1px solid black;
+
+    &Introduction {
+        order: 1;
+    }
+
+    &About {
+        order: 2;
+    }
+
+    &Experience {
+        order: 3;
+    }
+
+    &Contact {
+        order: 5;
+    }
+}

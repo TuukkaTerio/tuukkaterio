@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import PageSection from '../components/pageSection'
-import Project from '../components/project'
+import PageSection from '../components/pageSection/PageSection'
+import Project from '../components/project/Project'
 
 const client = require('contentful').createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
@@ -34,7 +34,7 @@ function HomePage() {
   }, [])
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Head>
         <title>Next.js + Contentful</title>
         <link
@@ -55,21 +55,23 @@ function HomePage() {
             />
           ))
         : null }
-      { projects.length > 0
-        ? projects.map((project, i) => (
-            <Project
-              title={ project.fields.title }
-              slug={ project.fields.slug }
-              media={ project.fields.media }
-              description={ project.fields.description }
-              linkGitHub={ project.fields.linkGitHub }
-              linkLive={ project.fields.linkLive }
-              order={ project.fields.order }
-              key={ i }
-            />
-          ))
-        : null }
-    </>
+      <div style={{ display: 'flex', order: '4' }}>
+        { projects.length > 0
+          ? projects.map((project, i) => (
+              <Project
+                title={ project.fields.title }
+                slug={ project.fields.slug }
+                media={ project.fields.media }
+                richText={ project.fields.richText }
+                linkGitHub={ project.fields.linkGitHub }
+                linkLive={ project.fields.linkLive }
+                projectOrder={ project.fields.order }
+                key={ i }
+              />
+            ))
+          : null }
+      </div>
+    </div>
   )
 }
 

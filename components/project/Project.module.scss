@@ -1,0 +1,16 @@
+.project {
+    border: 1px solid black;
+
+    &Active {
+        border-color: pink;
+    }
+
+    &Link {
+        display: block;
+        color: green;
+
+        &Github {
+            color: red;
+        }
+    }
+}
