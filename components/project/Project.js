@@ -1,16 +1,8 @@
-// --------------------------------------------------------------
-// Libraries
-// --------------------------------------------------------------
-
-import { useEffect, useState } from 'react';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import classnames from 'classnames';
-
-// --------------------------------------------------------------
-// Styles
-// --------------------------------------------------------------
-
-import styles from './Project.module.scss';
+import { useEffect, useState } from 'react'
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import classnames from 'classnames'
+import Translation from '../translation/Translation'
+import styles from './Project.module.scss'
 
 export const Project = ({
     title,
@@ -33,7 +25,6 @@ export const Project = ({
       className={ classnames(styles.project, { [styles.projectActive]: projectState }) }
       style={{ order: projectOrder }}
       >
-      <p>{ projectOrder }</p>
       <ProjectTitle
         visible={ isSet(title) }
         title={ title }
@@ -48,16 +39,16 @@ export const Project = ({
       />
       <ProjectLink
         styles={ styles }
-        visible={ isSet(linkGitHub) }
-        linkName={ linkGitHub }
-        linkTarget={ linkGitHub }
+        visible={ isSet(linkGitHub.en) }
+        linkName={ linkGitHub.en }
+        linkTarget={ linkGitHub.en }
         isGithub={ true }
       />
       <ProjectLink
         styles={ styles }
-        visible={ isSet(linkLive) }
-        linkName={ linkLive }
-        linkTarget={ linkLive }
+        visible={ isSet(linkLive.en) }
+        linkName={ linkLive.en }
+        linkTarget={ linkLive.en }
         isGithub={ false }
       />
     </div>
@@ -88,13 +79,15 @@ function toggleProject(projectState, setProjectState) {
 
 const ProjectTitle = ({ visible, title }) => {
   return visible ? (
-    <h2>{ title }</h2>
+    <h2>
+      <Translation text={ title } />
+    </h2>
   ) : null
 }
 
 const ProjectRichText = ({ visible, richText }) => {
   return visible ? (
-    documentToReactComponents(richText)
+    <Translation text={{ sv: documentToReactComponents(richText.sv), en: documentToReactComponents(richText.en) }} />
   ) : null
 }
 

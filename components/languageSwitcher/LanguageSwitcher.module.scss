@@ -1,0 +1,19 @@
+.languageSwitcher {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    position: fixed;
+    top: 1.5vw;
+    right: 1.5vw;
+    z-index: 1;
+    padding: 0;
+    box-shadow: none;
+    color: #000;
+
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+        background: transparent;
+        outline: 0;
+    }
+}

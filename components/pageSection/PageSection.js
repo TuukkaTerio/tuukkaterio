@@ -1,15 +1,7 @@
-// --------------------------------------------------------------
-// Libraries
-// --------------------------------------------------------------
-
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import classnames from 'classnames';
-
-// --------------------------------------------------------------
-// Styles
-// --------------------------------------------------------------
-
-import styles from './PageSection.module.scss';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import classnames from 'classnames'
+import Translation from '../translation/Translation'
+import styles from './PageSection.module.scss'
 
 export const PageSection = ({ 
     title,
@@ -21,10 +13,9 @@ export const PageSection = ({
     
     return (
       <div 
-        className={ getStyles(styles, id) }
-        id={ slug } 
+        className={ getStyles(styles, id.en) }
+        id={ slug }
         >
-        <p>{id}</p>
         <PageSectionTitle
           visible={ isSet(title) }
           title={ title }
@@ -63,12 +54,14 @@ function getStyles(styles, id) {
 
 const PageSectionTitle = ({ visible, title }) => {
   return visible ? (
-    <h2>{ title }</h2>
+    <h2>
+      <Translation text={ title } />
+    </h2>
   ) : null
 }
 
 const PageSectionRichText = ({ visible, richText }) => {
   return visible ? (
-    documentToReactComponents(richText)
+    <Translation text={{ sv: documentToReactComponents(richText.sv), en: documentToReactComponents(richText.en) }} />
   ) : null
 }
