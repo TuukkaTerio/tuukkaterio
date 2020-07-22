@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import classnames from 'classnames'
 import Translation from '../translation/Translation'
@@ -10,8 +10,7 @@ export const Project = ({
     media,
     richText,
     linkGitHub,
-    linkLive,
-    projectOrder
+    linkLive
   }) => {
   
   const [projectState, setProjectState] = useState(false);
@@ -23,7 +22,6 @@ export const Project = ({
         toggleProject(projectState, setProjectState);
       }}
       className={ classnames(styles.project, { [styles.projectActive]: projectState }) }
-      style={{ order: projectOrder }}
       >
       <ProjectTitle
         visible={ isSet(title) }
@@ -39,16 +37,16 @@ export const Project = ({
       />
       <ProjectLink
         styles={ styles }
-        visible={ isSet(linkGitHub.en) }
-        linkName={ linkGitHub.en }
-        linkTarget={ linkGitHub.en }
+        visible={ isSet(linkGitHub) }
+        linkName={ linkGitHub }
+        linkTarget={ linkGitHub }
         isGithub={ true }
       />
       <ProjectLink
         styles={ styles }
-        visible={ isSet(linkLive.en) }
-        linkName={ linkLive.en }
-        linkTarget={ linkLive.en }
+        visible={ isSet(linkLive) }
+        linkName={ linkLive }
+        linkTarget={ linkLive }
         isGithub={ false }
       />
     </div>

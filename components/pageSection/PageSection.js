@@ -2,6 +2,7 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import classnames from 'classnames'
 import Translation from '../translation/Translation'
 import styles from './PageSection.module.scss'
+import ProjectList from '../projectList/ProjectList'
 
 export const PageSection = ({ 
     title,
@@ -10,19 +11,23 @@ export const PageSection = ({
     richText,
     media 
   }) => {
-    
     return (
-      <div 
-        className={ getStyles(styles, id.en) }
-        id={ slug }
-        >
-        <PageSectionTitle
-          visible={ isSet(title) }
-          title={ title }
-        />
-        <PageSectionRichText
-          visible={ isSet(richText) }
-          richText={ richText }
+      <div>
+        <div 
+          className={ getStyles(styles, id) }
+          id={ slug }
+          >
+          <PageSectionTitle
+            visible={ isSet(title) }
+            title={ title }
+          />
+          <PageSectionRichText
+            visible={ isSet(richText) }
+            richText={ richText }
+          />
+        </div>
+        <PageSectionProjectList 
+          visible={ id === 'experience' }
         />
       </div>
     )
@@ -63,5 +68,11 @@ const PageSectionTitle = ({ visible, title }) => {
 const PageSectionRichText = ({ visible, richText }) => {
   return visible ? (
     <Translation text={{ sv: documentToReactComponents(richText.sv), en: documentToReactComponents(richText.en) }} />
+  ) : null
+}
+
+const PageSectionProjectList = ({ visible }) => {
+  return visible ? (
+    <ProjectList/>
   ) : null
 }

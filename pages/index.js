@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import PageSection from '../components/pageSection/PageSection'
-import Project from '../components/project/Project'
 
 import LanguageContext from '../contexts/LanguageContext';
+import ProjectContext from '../contexts/ProjectContext';
 import LanguageSwitcher from "../components/languageSwitcher/LanguageSwitcher";
 
 const client = require('contentful').createClient({
@@ -22,22 +22,27 @@ function HomePage() {
   }
 
   const [pageSections, setPageSections] = useState([])
-  const [projects, setProjects] = useState([])
+  let [projects, setProjects] = useState([])
+  let [language, setLanguage] = useState("en")
 
   useEffect(() => {
     async function getPageSections() {
       const allPageSections = await fetchEntries('pageSection')
+      allPageSections.sort(function(a, b) {
+        return a.fields.order.en - b.fields.order.en;
+      })
       setPageSections([...allPageSections])
     }
     async function getProjects() {
       const allProjects = await fetchEntries('project')
+      allProjects.sort(function(a, b) {
+        return a.fields.order.en - b.fields.order.en;
+      })
       setProjects([...allProjects])
     }
     getPageSections()
     getProjects()
   }, [])
-
-  let [language, setLanguage] = useState("sv");
 
   // console.dir(pageSections);
   // console.dir(projects);
@@ -54,34 +59,20 @@ function HomePage() {
             type="text/css"
           />
         </Head>
-        { pageSections.length > 0
-          ? pageSections.map((pageSection, i) => (
-              <PageSection
-                title={ pageSection.fields.title }
-                id={ pageSection.fields.id }
-                slug={ pageSection.fields.slug }
-                richText={ pageSection.fields.richText }
-                media={ pageSection.fields.media }
-                key={ i }
-              />
-            ))
-          : null }
-        <div style={{ display: 'flex', order: '4' }}>
-          { projects.length > 0
-            ? projects.map((project, i) => (
-                <Project
-                  title={ project.fields.title }
-                  slug={ project.fields.slug }
-                  media={ project.fields.media }
-                  richText={ project.fields.richText }
-                  linkGitHub={ project.fields.linkGitHub }
-                  linkLive={ project.fields.linkLive }
-                  projectOrder={ project.fields.order }
+        <ProjectContext.Provider value={ { projects, setProjects } }>
+          { pageSections.length > 0
+            ? pageSections.map((pageSection, i) => (
+                <PageSection
+                  title={ pageSection.fields.title }
+                  id={ pageSection.fields.id.en }
+                  slug={ pageSection.fields.slug.en }
+                  richText={ pageSection.fields.richText }
+                  media={ pageSection.fields.media }
                   key={ i }
                 />
               ))
             : null }
-        </div>
+        </ProjectContext.Provider>
       </div>
     </LanguageContext.Provider>
   )
