@@ -13,7 +13,8 @@ export const ProjectList = () => {
                 <Project
                     title={ project.fields.title }
                     slug={ project.fields.slug.en }
-                    media={ project.fields.media }
+                    thumbnail={ project.fields.thumbnail }
+                    images={ project.fields.images }
                     richText={ project.fields.richText }
                     linkGitHub={ project.fields.linkGitHub.en }
                     linkLive={ project.fields.linkLive.en }

@@ -44,8 +44,8 @@ function HomePage() {
     getProjects()
   }, [])
 
-  // console.dir(pageSections);
-  // console.dir(projects);
+  console.dir(pageSections);
+  console.dir(projects);
 
   return (
     <LanguageContext.Provider value={ { language, setLanguage } }>

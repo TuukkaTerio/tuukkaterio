@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import Translation from '../translation/Translation'
 import styles from './PageSection.module.scss'
 import ProjectList from '../projectList/ProjectList'
+import { isSet } from '../../utils/isSet/IsSet'
 
 export const PageSection = ({ 
     title,
@@ -25,6 +26,10 @@ export const PageSection = ({
             visible={ isSet(richText) }
             richText={ richText }
           />
+          <PageSectionMedia
+            visible={ isSet(media) }
+            media={ media }
+          />
         </div>
         <PageSectionProjectList 
           visible={ id === 'experience' }
@@ -38,10 +43,6 @@ export default PageSection
 // --------------------------------------------------------------
 // Helpers
 // --------------------------------------------------------------
-
-function isSet(value) {
-  return value !== null && value !== undefined && value !== '';
-}
 
 function getStyles(styles, id) {
   return classnames(
@@ -68,6 +69,13 @@ const PageSectionTitle = ({ visible, title }) => {
 const PageSectionRichText = ({ visible, richText }) => {
   return visible ? (
     <Translation text={{ sv: documentToReactComponents(richText.sv), en: documentToReactComponents(richText.en) }} />
+  ) : null
+}
+
+const PageSectionMedia = ({ visible, media }) => {
+  let altText = null;
+  return visible ? (
+    <img src={ media.en.fields.file.en.url } alt={ media.en.fields.title.en }></img>
   ) : null
 }
 

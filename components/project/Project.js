@@ -3,11 +3,13 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import classnames from 'classnames'
 import Translation from '../translation/Translation'
 import styles from './Project.module.scss'
+import { isSet } from '../../helpers/isSet/IsSet'
 
 export const Project = ({
     title,
     slug,
-    media,
+    thumbnail,
+    images,
     richText,
     linkGitHub,
     linkLive
@@ -23,32 +25,40 @@ export const Project = ({
       }}
       className={ classnames(styles.project, { [styles.projectActive]: projectState }) }
       >
-      <ProjectTitle
-        visible={ isSet(title) }
-        title={ title }
+      <ProjectThumbnail
+        visible={ isSet(thumbnail) }
+        thumbnail={ thumbnail }
       />
-      <ProjectRichText 
-        visible={ isSet(richText) }
-        richText={ richText }
-      />
-      <ProjectMedia
-        visible={ isSet(media) }
-        media={ media }
-      />
-      <ProjectLink
-        styles={ styles }
-        visible={ isSet(linkGitHub) }
-        linkName={ linkGitHub }
-        linkTarget={ linkGitHub }
-        isGithub={ true }
-      />
-      <ProjectLink
-        styles={ styles }
-        visible={ isSet(linkLive) }
-        linkName={ linkLive }
-        linkTarget={ linkLive }
-        isGithub={ false }
-      />
+      <div className={ styles.projectOverlay }>
+        <ProjectTitle
+          visible={ isSet(title) }
+          title={ title }
+        />
+        <div className={ styles.projectOverlayInnerWrapper }>
+          <ProjectRichText 
+            visible={ isSet(richText) }
+            richText={ richText }
+          />
+          <ProjectImages
+            visible={ isSet(images) }
+            images={ images.en }
+          />
+          <ProjectLink
+            styles={ styles }
+            visible={ isSet(linkGitHub) }
+            linkName={ linkGitHub }
+            linkTarget={ linkGitHub }
+            isGithub={ true }
+          />
+          <ProjectLink
+            styles={ styles }
+            visible={ isSet(linkLive) }
+            linkName={ linkLive }
+            linkTarget={ linkLive }
+            isGithub={ false }
+          />
+        </div>
+      </div>
     </div>
   )
 }
@@ -58,10 +68,6 @@ export default Project
 // --------------------------------------------------------------
 // Helpers
 // --------------------------------------------------------------
-
-function isSet(value) {
-  return value !== null && value !== undefined && value !== '';
-}
 
 function toggleProject(projectState, setProjectState) {
   if(projectState) {
@@ -75,11 +81,17 @@ function toggleProject(projectState, setProjectState) {
 // Subcomponents
 // --------------------------------------------------------------
 
+const ProjectThumbnail = ({ visible, thumbnail }) => {
+  return visible ? (
+    <img src={ thumbnail.en.fields.file.en.url } alt={ thumbnail.en.fields.title.en } />
+  ) : null
+}
+
 const ProjectTitle = ({ visible, title }) => {
   return visible ? (
-    <h2>
+    <h3 className={ styles.projectTitle }>
       <Translation text={ title } />
-    </h2>
+    </h3>
   ) : null
 }
 
@@ -89,9 +101,15 @@ const ProjectRichText = ({ visible, richText }) => {
   ) : null
 }
 
-const ProjectMedia = ({ visible, media }) => {
+const ProjectImages = ({ visible, images }) => {
   return visible ? (
-    <p>Media</p>
+    <div>
+      { images.length > 0
+      ? images.map((image, i) => (
+        <img key={ i } src={ image.fields.file.en.url } alt={ image.fields.title.en } />
+        ))
+      : null }
+    </div>
   ) : null
 }
 

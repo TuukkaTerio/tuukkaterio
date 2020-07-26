@@ -1,5 +1,9 @@
 .pageSection {
     border: 1px solid black;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
     &Introduction {
         border: 1px solid pink;
