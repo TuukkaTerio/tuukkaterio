@@ -16,8 +16,7 @@ export const ProjectList = () => {
                     thumbnail={ project.fields.thumbnail }
                     images={ project.fields.images }
                     richText={ project.fields.richText }
-                    linkGitHub={ project.fields.linkGitHub.en }
-                    linkLive={ project.fields.linkLive.en }
+                    links={ project.fields.links }
                     key={ i }
                 />
                 ))

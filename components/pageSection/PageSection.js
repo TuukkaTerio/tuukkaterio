@@ -3,14 +3,16 @@ import classnames from 'classnames'
 import Translation from '../translation/Translation'
 import styles from './PageSection.module.scss'
 import ProjectList from '../projectList/ProjectList'
-import { isSet } from '../../utils/isSet/IsSet'
+import RelatedLinks from '../relatedLinks/RelatedLinks'
+import { isSet } from '../../helpers/IsSet'
 
 export const PageSection = ({ 
     title,
     id,
     slug,
     richText,
-    media 
+    media,
+    links
   }) => {
     return (
       <div>
@@ -29,6 +31,10 @@ export const PageSection = ({
           <PageSectionMedia
             visible={ isSet(media) }
             media={ media }
+          />
+          <PageSectionRelatedLinks
+            visible={ isSet(links) }
+            links={ links }
           />
         </div>
         <PageSectionProjectList 
@@ -82,5 +88,13 @@ const PageSectionMedia = ({ visible, media }) => {
 const PageSectionProjectList = ({ visible }) => {
   return visible ? (
     <ProjectList/>
+  ) : null
+}
+
+const PageSectionRelatedLinks = ({ visible, links }) => {
+  return visible ? (
+    <RelatedLinks
+      links={ links.en }
+    />
   ) : null
 }

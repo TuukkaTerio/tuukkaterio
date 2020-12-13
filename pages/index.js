@@ -68,6 +68,7 @@ function HomePage() {
                   slug={ pageSection.fields.slug.en }
                   richText={ pageSection.fields.richText }
                   media={ pageSection.fields.media }
+                  links={ pageSection.fields.links }
                   key={ i }
                 />
               ))

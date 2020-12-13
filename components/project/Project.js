@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import classnames from 'classnames'
+import FocusTrap from 'focus-trap-react';
 import Translation from '../translation/Translation'
 import styles from './Project.module.scss'
-import { isSet } from '../../helpers/isSet/IsSet'
+import { isSet } from '../../helpers/IsSet'
+import { disableScroll } from '../../helpers/DisableScroll'
+import RelatedLinks from '../relatedLinks/RelatedLinks'
 
 export const Project = ({
     title,
@@ -11,54 +14,61 @@ export const Project = ({
     thumbnail,
     images,
     richText,
-    linkGitHub,
-    linkLive
+    links
   }) => {
   
-  const [projectState, setProjectState] = useState(false);
+  const [projectIsActiveState, setProjectIsActiveState] = useState(false);
 
   return (
     <div 
       id={ slug } 
-      onClick={ () => {
-        toggleProject(projectState, setProjectState);
-      }}
-      className={ classnames(styles.project, { [styles.projectActive]: projectState }) }
-      >
-      <ProjectThumbnail
-        visible={ isSet(thumbnail) }
-        thumbnail={ thumbnail }
-      />
-      <div className={ styles.projectOverlay }>
-        <ProjectTitle
+      className={ classnames(
+        styles.project,
+        { [styles.projectIsActive]: projectIsActiveState }
+      ) }>
+      <button
+        aria-expanded={ projectIsActiveState }
+        onClick={ () => {
+          toggleProjectIsActiveState(projectIsActiveState, setProjectIsActiveState);
+        }}>
+        <ProjectThumbnail
+          visible={ isSet(thumbnail) }
+          thumbnail={ thumbnail }
+        />
+        <ProjectButtonText
           visible={ isSet(title) }
           title={ title }
         />
-        <div className={ styles.projectOverlayInnerWrapper }>
-          <ProjectRichText 
-            visible={ isSet(richText) }
-            richText={ richText }
-          />
-          <ProjectImages
-            visible={ isSet(images) }
-            images={ images.en }
-          />
-          <ProjectLink
-            styles={ styles }
-            visible={ isSet(linkGitHub) }
-            linkName={ linkGitHub }
-            linkTarget={ linkGitHub }
-            isGithub={ true }
-          />
-          <ProjectLink
-            styles={ styles }
-            visible={ isSet(linkLive) }
-            linkName={ linkLive }
-            linkTarget={ linkLive }
-            isGithub={ false }
-          />
+      </button>
+      <FocusTrap active={ projectIsActiveState }>
+        <div className={ styles.projectOverlay } aria-hidden={ !projectIsActiveState }>
+          <div className={ styles.projectOverlayInnerWrapper }>
+            <ProjectTitle
+              visible={ isSet(title) }
+              title={ title }
+            />
+            <ProjectRichText 
+              visible={ isSet(richText) }
+              richText={ richText }
+            />
+            <ProjectImages
+              visible={ isSet(images) }
+              images={ images.en }
+            />
+            <ProjectRelatedLinks
+              visible={ isSet(links) }
+              links={ links }
+            />
+            <button 
+              aria-expanded={ projectIsActiveState }
+              onClick={ () => {
+                toggleProjectIsActiveState(projectIsActiveState, setProjectIsActiveState);
+              }}>
+                X
+              </button>
+          </div>
         </div>
-      </div>
+      </FocusTrap>
     </div>
   )
 }
@@ -69,11 +79,13 @@ export default Project
 // Helpers
 // --------------------------------------------------------------
 
-function toggleProject(projectState, setProjectState) {
-  if(projectState) {
-    setProjectState(false);
+function toggleProjectIsActiveState(projectIsActiveState, setProjectIsActiveState) {
+  if(projectIsActiveState) {
+    setProjectIsActiveState(false);
+    disableScroll(false);
   } else {
-    setProjectState(true);
+    setProjectIsActiveState(true);
+    disableScroll(true);
   }
 };
 
@@ -84,6 +96,14 @@ function toggleProject(projectState, setProjectState) {
 const ProjectThumbnail = ({ visible, thumbnail }) => {
   return visible ? (
     <img src={ thumbnail.en.fields.file.en.url } alt={ thumbnail.en.fields.title.en } />
+  ) : null
+}
+
+const ProjectButtonText = ({ visible, title }) => {
+  return visible ? (
+    <p className={ styles.projectButtonText }>
+      <Translation text={ title } />
+    </p>
   ) : null
 }
 
@@ -103,22 +123,18 @@ const ProjectRichText = ({ visible, richText }) => {
 
 const ProjectImages = ({ visible, images }) => {
   return visible ? (
-    <div>
-      { images.length > 0
-      ? images.map((image, i) => (
+    <div className={ styles.projectImages }>
+      { images.map((image, i) => (
         <img key={ i } src={ image.fields.file.en.url } alt={ image.fields.title.en } />
-        ))
-      : null }
+      )) }
     </div>
   ) : null
 }
 
-const ProjectLink = ({ styles, visible, linkName, linkTarget, isGithub }) => {
+const ProjectRelatedLinks = ({ visible, links }) => {
   return visible ? (
-    <a 
-      className={ classnames(styles.projectLink, {[styles.projectLinkGithub]: isGithub}) }
-      href={ linkTarget }>
-        <span>{ linkName }</span>
-      </a>
+    <RelatedLinks
+      links={ links.en }
+    />
   ) : null
 }
