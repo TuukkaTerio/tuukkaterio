@@ -34,6 +34,7 @@ export const Project = ({
         <ProjectThumbnail
           visible={ isSet(thumbnail) }
           thumbnail={ thumbnail }
+          styles={ styles }
         />
         <ProjectButtonText
           visible={ isSet(title) }
@@ -93,9 +94,13 @@ function toggleProjectIsActiveState(projectIsActiveState, setProjectIsActiveStat
 // Subcomponents
 // --------------------------------------------------------------
 
-const ProjectThumbnail = ({ visible, thumbnail }) => {
+const ProjectThumbnail = ({ visible, thumbnail, styles }) => {
   return visible ? (
-    <img src={ thumbnail.en.fields.file.en.url } alt={ thumbnail.en.fields.title.en } />
+    <img 
+      className={ styles.projectThumbnail }
+      src={ thumbnail.en.fields.file.en.url } 
+      alt={ thumbnail.en.fields.title.en } 
+    />
   ) : null
 }
 

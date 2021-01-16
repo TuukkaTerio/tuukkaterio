@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import { write } from '../../helpers/Storage';
 import LanguageContext from '../../contexts/LanguageContext'
 import Translation from '../translation/Translation'
 import styles from './LanguageSwitcher.module.scss'
@@ -8,11 +9,19 @@ const LanguageSwitcher = () => {
     const toggleLanguage = (language === 'sv') ? 'en' : 'sv';
 
     return (
-        <button className={styles.languageSwitcher} onClick={ () => setLanguage(toggleLanguage) }>
+        <button 
+            className={ styles.languageSwitcher } 
+            lang={ toggleLanguage } 
+            onClick={ () => {
+                // Store in sessionStorage
+                write('storedLanguage', toggleLanguage);
+                // Update the LanguageContext
+                setLanguage(toggleLanguage);
+            }}>
             <span>
                 <Translation text={ {
                     en: 'Svenska',
-                    sv: 'English',
+                    sv: 'English'
                 } }/>
             </span>
         </button>

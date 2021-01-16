@@ -15,7 +15,7 @@ export const PageSection = ({
     links
   }) => {
     return (
-      <div>
+      <>
         <div 
           className={ getStyles(styles, id) }
           id={ slug }
@@ -32,15 +32,15 @@ export const PageSection = ({
             visible={ isSet(media) }
             media={ media }
           />
+          <PageSectionProjectList 
+            visible={ id === 'work' }
+          />
           <PageSectionRelatedLinks
             visible={ isSet(links) }
             links={ links }
           />
         </div>
-        <PageSectionProjectList 
-          visible={ id === 'experience' }
-        />
-      </div>
+      </>
     )
 }
   

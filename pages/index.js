@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
-import Head from 'next/head'
+import { useEffect, useState, useContext } from 'react'
+import { read } from '../helpers/Storage';
+
+import PageNavigation from '../components/pageNavigation/PageNavigation'
 import PageSection from '../components/pageSection/PageSection'
 
 import LanguageContext from '../contexts/LanguageContext';
@@ -21,9 +23,11 @@ function HomePage() {
     console.log(`Error getting Entries for ${ contentType.name }.`)
   }
 
-  const [pageSections, setPageSections] = useState([])
+  let [pageSections, setPageSections] = useState([])
   let [projects, setProjects] = useState([])
-  let [language, setLanguage] = useState("en")
+
+  let storedLanguage = read('storedLanguage');
+  let [language, setLanguage] = useState( storedLanguage !== null ? storedLanguage : 'en' );
 
   useEffect(() => {
     async function getPageSections() {
@@ -33,6 +37,7 @@ function HomePage() {
       })
       setPageSections([...allPageSections])
     }
+
     async function getProjects() {
       const allProjects = await fetchEntries('project')
       allProjects.sort(function(a, b) {
@@ -40,6 +45,7 @@ function HomePage() {
       })
       setProjects([...allProjects])
     }
+
     getPageSections()
     getProjects()
   }, [])
@@ -50,29 +56,22 @@ function HomePage() {
   return (
     <LanguageContext.Provider value={ { language, setLanguage } }>
       <LanguageSwitcher/>
+      <PageNavigation pageSections={ pageSections }/>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Head>
-          <title>Next.js + Contentful</title>
-          <link
-            rel="stylesheet"
-            href="https://css.zeit.sh/v1.css"
-            type="text/css"
-          />
-        </Head>
         <ProjectContext.Provider value={ { projects, setProjects } }>
           { pageSections.length > 0
             ? pageSections.map((pageSection, i) => (
-                <PageSection
-                  title={ pageSection.fields.title }
-                  id={ pageSection.fields.id.en }
-                  slug={ pageSection.fields.slug.en }
-                  richText={ pageSection.fields.richText }
-                  media={ pageSection.fields.media }
-                  links={ pageSection.fields.links }
-                  key={ i }
-                />
-              ))
-            : null }
+              <PageSection
+                title={ pageSection.fields.title }
+                id={ pageSection.fields.id.en }
+                slug={ pageSection.fields.slug.en }
+                richText={ pageSection.fields.richText }
+                media={ pageSection.fields.media }
+                links={ pageSection.fields.links }
+                key={ i }
+              />
+            ))
+          : null }
         </ProjectContext.Provider>
       </div>
     </LanguageContext.Provider>

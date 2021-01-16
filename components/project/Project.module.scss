@@ -41,10 +41,10 @@
         }
     }
 
-    &Images {
-        img {
-            width: calc(100% /3);
-        }
+    &Thumbnail,
+    &Images img {
+        height: auto;
+        width: 100%;
     }
 
     &IsActive {

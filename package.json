@@ -20,13 +20,13 @@
   },
   "homepage": "https://github.com/TuukkaTerio/tuukkaterio#readme",
   "dependencies": {
-    "@contentful/rich-text-react-renderer": "^14.1.1",
+    "@contentful/rich-text-react-renderer": "^14.1.2",
     "classnames": "~2.2.6",
-    "contentful": "^7.14.5",
-    "next": "^9.4.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "sass": "^1.26.10",
-    "focus-trap-react": "^8.0.0"
+    "contentful": "^7.15.2",
+    "focus-trap-react": "^8.0.0",
+    "next": "^9.5.5",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "sass": "^1.32.4"
   }
 }
